@@ -60,6 +60,29 @@ ggplot() +
 ```
 
 
+```{r}
+
+# With dB as an rnorm - will remove later
+
+carfunction <- function(n){
+  dB <- rnorm(n, 69.78,17.5)
+  Mj <- runif(n,8.5*45,8.5*65)
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+ESDB_stor <- carfunction(n)
+
+carfunction(n)
+mean(carfunction(n))
+summary(carfunction(n))
+
+ggplot() +
+  geom_point(aes(x = x_star$carspeed, y = ESDB_stor)) + geom_smooth()
+
+```
+
+
 
 
 
