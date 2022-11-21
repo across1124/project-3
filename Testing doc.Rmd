@@ -15,6 +15,18 @@ carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,
 mean(carDB)
 var(carDB)
 length(carDB)
+
+set.seed(400)
+carfunction <- function(n){
+  dB <- rnorm(n,mean(carDB),var(carDB))
+  Mj <- runif(n,8.5*45,8.5*65)
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+carfunction(10000)
+
+
 ```
 
 
