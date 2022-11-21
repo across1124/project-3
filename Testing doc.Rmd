@@ -25,12 +25,11 @@ ggplot() +
 ## ------------------------------------------------------------------------
 # set up the bootstrap
 B <- 1000
-n <- nrow(carinfo)
 
 for(b in seq_len(B)) {
   ## Your Turn: Do the bootstrap!
   ## get bs dataset
-  idx_star <- sample(seq_len(n), n, replace = TRUE)
+  idx_star <- sample(1:41, 1000, replace = TRUE)
   x_star <- carinfo[idx_star,]
 }
 ```
@@ -54,8 +53,8 @@ mean(carfunction(n))
 summary(carfunction(n))
 ```
 
-
 ```{r}
+# wont work to knit
 ggplot() +
   geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.))
 ```
