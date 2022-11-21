@@ -39,6 +39,7 @@ for(b in seq_len(B)) {
 n <- 1000
 
 set.seed(400)
+
 carfunction <- function(n){
   dB <- x_star$carDB
   Mj <- runif(n,8.5*45,8.5*65)
@@ -46,12 +47,18 @@ carfunction <- function(n){
   return(ESDB)
 }
 
+ESDB_stor <- data.frame(carfunction(n))
+
 carfunction(n)
 mean(carfunction(n))
+summary(carfunction(n))
 ```
 
 
-
+```{r}
+ggplot() +
+  geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.))
+```
 
 
 
