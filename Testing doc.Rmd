@@ -14,6 +14,8 @@ library(bootstrap)
 library(ggplot2)
 ```
 
+AUTO
+
 ```{r}
 carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
 carspeed <- c(30:70)
@@ -82,7 +84,59 @@ ggplot() +
 
 ```
 
+MEDIUM TRUCK
 
+```{r}
+## Method with DB from sample data
+# medium truck data
+mediumtruckDB <- c(73,74,74,75,75,76,76,77,77,77,78,78,78,79,79,79,80,80,80,81,81,81,82,82,82,82,83,83,83,83,84,84,84,84,85,85,85,85,86,86,86)
+
+mediumtruckinfo <- data.frame(carspeed) |> cbind(mediumtruckDB)
+
+ggplot() +
+  geom_point(aes(carspeed, mediumtruckDB), data = mediumtruckinfo)
+
+#------------------------------------------------------------------
+
+for(b in seq_len(B)) {
+  ## Your Turn: Do the bootstrap!
+  ## get bs dataset
+  idx_star <- sample(1:41, 1000, replace = TRUE)
+  x_star <- mediumtruckinfo[idx_star,]
+}
+
+n <- 1000
+
+set.seed(400)
+
+mediumtruckfunction <- function(n){
+  dB <- x_star$mediumtruckDB
+  Mj <- runif(n,8.5*45,8.5*65)
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+ESDB_stor <- data.frame(mediumtruckfunction(n))
+
+mediumtruckfunction(n)
+mean(mediumtruckfunction(n))
+summary(mediumtruckfunction(n))
+```
+
+```{r}
+## Method with dB as an rnorm
+```
+
+HEAVY TRUCK 
+
+```{r}
+## Method with DB from sample data
+# heavy truck data
+```
+
+```{r}
+## Method with dB as an rnorm
+```
 
 
 
