@@ -172,10 +172,12 @@ summary(heavytruckfunction(n))
 ## Method with dB as an rnorm
 heavy_rnormfunction <- function(n){
   dB <- rnorm(n, 85.12,7.31)
-  Mj <- runif(n,8.5*45,8.5*65)
+  Mj <- runif(n,35*13.4,43*16.6)
   ESDB <- (Mj)/(dB)
   return(ESDB)
 }
+
+#For Mj above, 35 and 43 came from the link I used to find 13.4 and 16.6
 
 heavy_ESDB_stor <- heavy_rnormfunction(n)
 
