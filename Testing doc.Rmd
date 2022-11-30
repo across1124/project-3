@@ -20,7 +20,6 @@ AUTO
 carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
 carspeed <- c(30:70)
 carinfo <- data.frame(carspeed) |> cbind(carDB)
-
 ggplot() +
   geom_point(aes(carspeed, carDB), data = carinfo)
 
@@ -131,11 +130,63 @@ HEAVY TRUCK
 
 ```{r}
 ## Method with DB from sample data
+
 # heavy truck data
+heavytruckDB <- c(80,80,81,81,81,82,82,82,82,83,83,83,84,84,84,84,85,85,85,85,85,86,86,86,86,86,87,87,87,87,87,88,88,88,88,88,88,89,89,89,89)
+
+heavytruckinfo <- data.frame(carspeed) |> cbind(heavytruckDB)
+
+ggplot() +
+  geom_point(aes(carspeed, heavytruckDB), data = heavytruckinfo)
+
+#------------------------------------------------------------------
+
+for(b in seq_len(B)) {
+  ## Your Turn: Do the bootstrap!
+  ## get bs dataset
+  heavyidx_star <- sample(1:41, 1000, replace = TRUE)
+  heavyx_star <- heavytruckinfo[heavyidx_star,]
+}
+
+n <- 1000
+
+set.seed(400)
+
+heavytruckfunction <- function(n){
+  dB <- heavyx_star$heavytruckDB
+  Mj <- runif(n,8.5*45,8.5*65)
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+heavy_ESDB_stor <- data.frame(heavytruckfunction(n))
+
+heavytruckfunction(n)
+mean(heavytruckfunction(n))
+summary(heavytruckfunction(n))
+
+
 ```
 
 ```{r}
 ## Method with dB as an rnorm
+heavy_rnormfunction <- function(n){
+  dB <- rnorm(n, 85.12,7.31)
+  Mj <- runif(n,8.5*45,8.5*65)
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+heavy_ESDB_stor <- heavy_rnormfunction(n)
+
+heavy_rnormfunction(n)
+mean(heavy_rnormfunction(n))
+summary(heavy_rnormfunction(n))
+
+ggplot() +
+  geom_point(aes(x = heavyx_star$carspeed, y = heavy_ESDB_stor)) + geom_smooth()
+
+
 ```
 
 
