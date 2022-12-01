@@ -170,10 +170,13 @@ summary(heavytruckfunction(n))
 ```
 
 ```{r}
+
 ## Method with dB as an rnorm
 heavy_rnormfunction <- function(n){
   dB <- rnorm(n, 85.12,7.31)
-  Mj <- runif(n,35*13.4,43*16.6)
+  Mj <- rnorm(n,1.60934*16.6*heavyx_star$carspeed-heavyx_star$carspeed,1)
+  
+  # runif(n,1.60934*heavyx_star$carspeed*13.4,1.60934*heavyx_star$carspeed*16.6)
   ESDB <- (Mj)/(dB)
   return(ESDB)
 }
@@ -182,12 +185,13 @@ heavy_rnormfunction <- function(n){
 
 heavy_ESDB_stor <- heavy_rnormfunction(n)
 
-# heavy_rnormfunction(n)
+heavy_rnormfunction(n)
 mean(heavy_rnormfunction(n))
 summary(heavy_rnormfunction(n))
 
 ggplot() +
   geom_point(aes(x = heavyx_star$carspeed, y = heavy_ESDB_stor)) + geom_smooth()
+
 
 
 ```
