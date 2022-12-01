@@ -1,5 +1,5 @@
 ---
-title: "Testing 1-2-3"
+title: "Testing"
 output: pdf_document
 date: '2022-11-17'
 ---
@@ -19,6 +19,7 @@ AUTO
 ```{r}
 carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
 carspeed <- c(30:70)
+carspeed <- 1.60934*carspeed
 carinfo <- data.frame(carspeed) |> cbind(carDB)
 ggplot() +
   geom_point(aes(carspeed, carDB), data = carinfo)
@@ -42,14 +43,14 @@ set.seed(400)
 
 carfunction <- function(n){
   dB <- x_star$carDB
-  Mj <- runif(n,8.5*45,8.5*65)
+  Mj <- rnorm(n,14697*2.29-x_star$carspeed, 1)
   ESDB <- (Mj)/(dB)
   return(ESDB)
 }
 
 ESDB_stor <- data.frame(carfunction(n))
 
-carfunction(n)
+# carfunction(n)
 mean(carfunction(n))
 summary(carfunction(n))
 ```
@@ -74,7 +75,7 @@ carfunction <- function(n){
 
 ESDB_stor <- carfunction(n)
 
-carfunction(n)
+# carfunction(n)
 mean(carfunction(n))
 summary(carfunction(n))
 
@@ -117,7 +118,7 @@ mediumtruckfunction <- function(n){
 
 ESDB_stor <- data.frame(mediumtruckfunction(n))
 
-mediumtruckfunction(n)
+# mediumtruckfunction(n)
 mean(mediumtruckfunction(n))
 summary(mediumtruckfunction(n))
 ```
@@ -161,7 +162,7 @@ heavytruckfunction <- function(n){
 
 heavy_ESDB_stor <- data.frame(heavytruckfunction(n))
 
-heavytruckfunction(n)
+# heavytruckfunction(n)
 mean(heavytruckfunction(n))
 summary(heavytruckfunction(n))
 
@@ -181,7 +182,7 @@ heavy_rnormfunction <- function(n){
 
 heavy_ESDB_stor <- heavy_rnormfunction(n)
 
-heavy_rnormfunction(n)
+# heavy_rnormfunction(n)
 mean(heavy_rnormfunction(n))
 summary(heavy_rnormfunction(n))
 
