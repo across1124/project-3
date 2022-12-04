@@ -43,8 +43,13 @@ set.seed(400)
 
 carfunction <- function(n){
   dB <- x_star$carDB
-  Mj <- rnorm(n,14697*2.29-x_star$carspeed, 1)
-  ESDB <- (Mj)/(dB)
+  Mj <- rnorm(n, (46*12/(.26)),1)
+#   Mj <-  rnorm(n, (46*12/(.26*x_star$carspeed)),1)
+ #    rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
+     
+# db <- x_star$carDB
+ # Mj <- rnorm(n,14697*2.29-x_star$carspeed, 1)
+  ESDB <- (Mj)/(x_star$carspeed)
   return(ESDB)
 }
 
@@ -54,12 +59,12 @@ ESDB_stor <- data.frame(carfunction(n))
 mean(carfunction(n))
 summary(carfunction(n))
 
-carfunction <- function(n){
-  dB <- rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
-  Mj <- runif(n, (12143*2.3/1.609), (14697*2.3/1.609))
-  ESDB <- (Mj)/(dB)
-  return(ESDB)
-}
+#carfunction <- function(n){
+#  dB <- rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
+#  Mj <- runif(n, (12143*2.3/1.609), (14697*2.3/1.609))
+#  ESDB <- (Mj)/(dB)
+#  return(ESDB)
+#}
 
 ESDB_stor <- data.frame(carfunction(n))
 
@@ -70,7 +75,7 @@ summary(carfunction(n))
 ```{r}
 # wont work to knit
 ggplot() +
-  geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.))
+  geom_point(aes(x = x_starcarspeed, y = ESDB_stor$carfunction.n.))
 ```
 
 
@@ -185,11 +190,20 @@ summary(heavytruckfunction(n))
 
 ## Method with dB as an rnorm
 heavy_rnormfunction <- function(n){
-  dB <- rnorm(n, 85.12,7.31)
-  Mj <- rnorm(n,1.60934*16.6*heavyx_star$carspeed-heavyx_star$carspeed,1)
+  dB <- heavyx_star$carspeed*1.609
+ # Mj <- rnorm(n,(16.6*100*3.7854)/(43),1)   
+    Mj <- rnorm(n, (43*300/(.26*1.609)),1)
+#  Mj <- (rnorm(n,43*(heavyx_star$carspeed*1.609)-(heavyx_star$carspeed*1.609),1))
   
-  # runif(n,1.60934*heavyx_star$carspeed*13.4,1.60934*heavyx_star$carspeed*16.6)
-  ESDB <- (Mj)/(dB)
+  # abs(rnorm(n,43*(heavyx_star$carspeed*1.609)-(heavyx_star$carspeed*1.609)^2,1))
+
+    
+    
+    #runif(n,1.60934*heavyx_star$carspeed*13.4,1.60934*heavyx_star$carspeed*16.6)
+
+    
+  
+  ESDB <- ((Mj)/heavyx_star$carspeed)
   return(ESDB)
 }
 
@@ -203,8 +217,6 @@ summary(heavy_rnormfunction(n))
 
 ggplot() +
   geom_point(aes(x = heavyx_star$carspeed, y = heavy_ESDB_stor)) + geom_smooth()
-
-
 
 ```
 
