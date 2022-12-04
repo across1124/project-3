@@ -53,6 +53,18 @@ ESDB_stor <- data.frame(carfunction(n))
 # carfunction(n)
 mean(carfunction(n))
 summary(carfunction(n))
+
+carfunction <- function(n){
+  dB <- rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
+  Mj <- runif(n, (12143*2.3/1.609), (14697*2.3/1.609))
+  ESDB <- (Mj)/(dB)
+  return(ESDB)
+}
+
+ESDB_stor <- data.frame(carfunction(n))
+
+mean(carfunction(n))
+summary(carfunction(n))
 ```
 
 ```{r}
@@ -101,8 +113,8 @@ ggplot() +
 for(b in seq_len(B)) {
   ## Your Turn: Do the bootstrap!
   ## get bs dataset
-  idx_star <- sample(1:41, 1000, replace = TRUE)
-  x_star <- mediumtruckinfo[idx_star,]
+  mediumidx_star <- sample(1:41, 1000, replace = TRUE)
+  mediumx_star <- mediumtruckinfo[mediumidx_star,]
 }
 
 n <- 1000
@@ -110,7 +122,7 @@ n <- 1000
 set.seed(400)
 
 mediumtruckfunction <- function(n){
-  dB <- x_star$mediumtruckDB
+  dB <- mediumx_star$mediumtruckDB
   Mj <- runif(n,8.5*45,8.5*65)
   ESDB <- (Mj)/(dB)
   return(ESDB)
