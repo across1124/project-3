@@ -9,7 +9,7 @@ date: '2022-11-21'
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Introduction
+## Introduction/Background
 
 "Modeling urban traffic noise dependence on energy, assisted with Monte Carlo Simulation" by Rui Calejo Rodrigues
 
@@ -18,6 +18,10 @@ Analysis to model total energy savings using car speed (km/h), noise (dB(A)), an
 Quantify relationship of energy reduction with car speed and noise reduction for future management of urban traffic from this perspective specifically.
 
 Use of Monte Carlo simulation to assist with complexity of vehicle mix and uncertainty of factors of interest.
+
+## Motivation
+
+Replicate EsdB relationshio across car velocity for speeds 30-70 km/h.
 
 ## About the Data 
 
@@ -41,10 +45,15 @@ plot(pressure)
 ## Challenges and Potential Changes for Future
 
 
+
 ## Conclusion
+
 
 
 ## Questions
 
 
+
 ## References
+
+
