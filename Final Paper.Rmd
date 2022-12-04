@@ -1,6 +1,7 @@
 ---
 title: "Final Paper"
 output: pdf_document
+author: "Alaina Cross, Sarah Denison, Cameryn Manley"
 date: '2022-11-21'
 ---
 
@@ -27,3 +28,6 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Work Cited 
+
