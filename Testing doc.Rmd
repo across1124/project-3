@@ -75,7 +75,7 @@ summary(carfunction(n))
 ```{r}
 # wont work to knit
 ggplot() +
-  geom_point(aes(x = x_starcarspeed, y = ESDB_stor$carfunction.n.))
+  geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.))
 ```
 
 
