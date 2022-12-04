@@ -1,5 +1,5 @@
 ---
-title: "Traffic Presentation"
+title: "Relationship Between Traffic Noise and Energy Consumption "
 output: beamer_presentation
 author: "Alaina Cross, Sarah Denison, Cameryn Manley"
 date: '2022-11-21'
@@ -9,27 +9,41 @@ date: '2022-11-21'
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Introduction
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+"Modeling urban traffic noise dependence on energy, assisted with Monte Carlo Simulation" by Rui Calejo Rodrigues
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+Analysis to model total energy savings using car speed (km/h), noise (dB(A)), and energy consumption (MJ)
 
-## Slide with Bullets
+Quantify relationship of energy reduction with car speed and noise reduction for future management of urban traffic from this perspective specifically.
+
+Use of Monte Carlo simulation to assist with complexity of vehicle mix and uncertainty of factors of interest.
+
+## About the Data 
 
 - Bullet 1
 - Bullet 2
 - Bullet 3
 
-## Slide with R Output
+## Code Explanations
 
 ```{r cars, echo = TRUE}
 summary(cars)
 ```
 
-## Slide with Plot
+## Code Explanations
 
 ```{r pressure}
 plot(pressure)
 ```
 
+## Challenges and Potential Changes for Future
+
+
+## Conclusion
+
+
+## Questions
+
+
+## References
