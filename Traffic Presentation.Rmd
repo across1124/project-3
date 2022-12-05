@@ -21,7 +21,17 @@ Use of Monte Carlo simulation to assist with complexity of vehicle mix and uncer
 
 ## Motivation
 
-Replicate EsdB relationshio across car velocity for speeds 30-70 km/h.
+Analyze energy savings per deciBel - ESdB
+
+ESdB = $\frac{\Delta energy}{\Delta noise}$
+
+  - $\Delta energy$ - energy variation (MJ)
+  
+  - $\Delta noise$ - noise variation (dB)
+
+Replicate ESdB relationship across car velocity for speeds 30-70 km/h using Monte Carlo methods and conversions of units from obtained data/resources.
+
+Possibly explore same analysis for medium and heavy trucks and analyze differences.
 
 ## About the Data 
 
@@ -44,16 +54,18 @@ plot(pressure)
 
 ## Challenges and Potential Changes for Future
 
-
+Statistical study had no access to related data, leading us to look for other data sources to use which may lead to less accuracy for replication of analysis.
 
 ## Conclusion
+
+Able to replicate similar pattern of ESdB for car speed 30-70 km/h, but produced a smaller scale on y-axis than original study.
+
+With noise being held constant, energy savings decreases as speed increased across interval of interest. This makes sense with energy consumption increasing as speed increases, leading to less energy being saved and ultimately decreasing ESdB.
+
+## References
 
 
 
 ## Questions
-
-
-
-## References
 
 
