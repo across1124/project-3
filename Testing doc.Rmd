@@ -16,16 +16,15 @@ library(ggplot2)
 
 AUTO
 
+
+
 ```{r}
+
 carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
 carspeed <- c(30:70)
 carspeed <- 1.60934*carspeed
 carinfo <- data.frame(carspeed) |> cbind(carDB)
-ggplot() +
-  geom_point(aes(carspeed, carDB), data = carinfo)
 
-## ------------------------------------------------------------------------
-# set up the bootstrap
 B <- 1000
 
 for(b in seq_len(B)) {
@@ -34,9 +33,7 @@ for(b in seq_len(B)) {
   idx_star <- sample(1:41, 1000, replace = TRUE)
   x_star <- carinfo[idx_star,]
 }
-```
 
-```{r}
 n <- 1000
 
 set.seed(400)
@@ -44,11 +41,7 @@ set.seed(400)
 carfunction <- function(n){
   dB <- x_star$carDB
   Mj <- rnorm(n, (46*12/(.26)),1)
-#   Mj <-  rnorm(n, (46*12/(.26*x_star$carspeed)),1)
- #    rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
-     
-# db <- x_star$carDB
- # Mj <- rnorm(n,14697*2.29-x_star$carspeed, 1)
+
   ESDB <- (Mj)/(x_star$carspeed)
   return(ESDB)
 }
@@ -59,20 +52,14 @@ ESDB_stor <- data.frame(carfunction(n))
 mean(carfunction(n))
 summary(carfunction(n))
 
-#carfunction <- function(n){
-#  dB <- rnorm(n, mean(x_star$carDB), sd(x_star$carDB))
-#  Mj <- runif(n, (12143*2.3/1.609), (14697*2.3/1.609))
-#  ESDB <- (Mj)/(dB)
-#  return(ESDB)
-#}
+
 
 ESDB_stor <- data.frame(carfunction(n))
 
 mean(carfunction(n))
 summary(carfunction(n))
-```
 
-```{r}
+
 ggplot() +
   geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.)) + xlab("Car Speed (km/h)") + ylab("ESDB") + ggtitle("Car")
 ```
