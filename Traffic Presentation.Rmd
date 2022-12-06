@@ -35,10 +35,13 @@ Possibly explore same analysis for medium and heavy trucks and analyze differenc
 
 ## About the Data 
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
-- Bullet 4
+Obtained data from Noise Pollution Clearinghouse (NPC) for noise statistics for 3 types of vehicles: Auto, Medium Truck, and Heavy Truck 
+
+  - Provides dB (noise at 50 ft) for each vehicle type
+ 
+  - Velocities 30-70 mph (~50-112)
+  
+  - Auto: 62-76 dB, Medium Truck: 73-86 dB, Heavy Truck: 80-89 dB
 
 ## Code Explanations
 
@@ -56,11 +59,17 @@ plot(pressure)
 
 Statistical study had no access to related data, leading us to look for other data sources to use which may lead to less accuracy for replication of analysis.
 
+Further exploration of units and understanding of how energy consumption changes with vehicle noise and velocity.
+
 ## Conclusion
 
 Able to replicate similar pattern of ESdB for car speed 30-70 km/h, but produced a smaller scale on y-axis than original study.
 
 With noise being held constant, energy savings decreases as speed increased across interval of interest. This makes sense with energy consumption increasing as speed increases, leading to less energy being saved and ultimately decreasing ESdB.
+
+Unable to replicate similar pattern for medium truck and heavy truck data, and struggled to mirror similar pattern of ESdB for velocities below 50 and abnormal spike around 105 km/h.
+
+Monte Carlo was used to allow for traffic mix and randomization of vehicles for estimation of ESdB, relating to noise, energy consumption, and velocity. 
 
 ## References
 
