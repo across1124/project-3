@@ -45,14 +45,14 @@ Noise statistics for 3 types of vehicles, obtained from Noise Pollution Clearing
 
 ## Code Explanations
 
-```{r cars, echo = TRUE}
-summary(cars)
+```{r, echo = TRUE}
+
 ```
 
 ## Code Explanations
 
-```{r pressure}
-plot(pressure)
+```{r}
+
 ```
 
 ## Challenges and Potential Changes for Future
