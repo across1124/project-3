@@ -127,22 +127,30 @@ n <- 1000
 set.seed(400)
 
 mediumtruckfunction <- function(n){
-  dB <- mediumx_star$mediumtruckDB
-  Mj <- runif(n,8.5*45,8.5*65)
-  ESDB <- (Mj)/(dB)
+  dB <- mediumx_star$carspeed*1.609
+    Mj <- rnorm(n, (35*150/(.26*1.609)),1)
+  ESDB <- (Mj)/(mediumx_star$carspeed)
   return(ESDB)
 }
 
-ESDB_stor <- data.frame(mediumtruckfunction(n))
+medium_ESDB_stor <- mediumtruckfunction(n)
 
 # mediumtruckfunction(n)
 mean(mediumtruckfunction(n))
 summary(mediumtruckfunction(n))
+
+
+ggplot() +
+  geom_point(aes(x = mediumx_star$carspeed, y = medium_ESDB_stor)) + geom_smooth() + xlab("Medium Truck Speed (km/h)") + ylab("ESDB") + ggtitle ("Medium Truck")
+
+
+
+
+
+
 ```
 
-```{r}
-## Method with dB as an rnorm
-```
+
 
 HEAVY TRUCK 
 
@@ -170,12 +178,6 @@ n <- 1000
 
 set.seed(400)
 
-heavytruckfunction <- function(n){
-  dB <- heavyx_star$heavytruckDB
-  Mj <- runif(n,8.5*45,8.5*65)
-  ESDB <- (Mj)/(dB)
-  return(ESDB)
-}
 
 heavy_ESDB_stor <- data.frame(heavytruckfunction(n))
 
@@ -187,27 +189,16 @@ summary(heavytruckfunction(n))
 ```
 
 ```{r}
-
+# WHAT WE ARE USING
 ## Method with dB as an rnorm
 heavy_rnormfunction <- function(n){
   dB <- heavyx_star$carspeed*1.609
- # Mj <- rnorm(n,(16.6*100*3.7854)/(43),1)   
     Mj <- rnorm(n, (43*300/(.26*1.609)),1)
-#  Mj <- (rnorm(n,43*(heavyx_star$carspeed*1.609)-(heavyx_star$carspeed*1.609),1))
-  
-  # abs(rnorm(n,43*(heavyx_star$carspeed*1.609)-(heavyx_star$carspeed*1.609)^2,1))
-
-    
-    
-    #runif(n,1.60934*heavyx_star$carspeed*13.4,1.60934*heavyx_star$carspeed*16.6)
-
     
   
   ESDB <- ((Mj)/heavyx_star$carspeed)
   return(ESDB)
 }
-
-#For Mj above, 35 and 43 came from the link I used to find 13.4 and 16.6
 
 heavy_ESDB_stor <- heavy_rnormfunction(n)
 
