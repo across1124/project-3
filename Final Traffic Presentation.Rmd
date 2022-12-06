@@ -1,0 +1,180 @@
+---
+title: "Relationship Between Traffic Noise and Energy Consumption"
+author: "Alaina Cross, Sarah Denison, Cameryn Manley"
+date: '2022-12-06'
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction/Background
+
+"Modeling urban traffic noise dependence on energy, assisted with Monte Carlo Simulation" by Rui Calejo Rodrigues
+
+Analysis to model total energy savings using car speed (km/h), noise (dB(A)), and energy consumption (MJ)
+
+Quantify relationship of energy reduction with car speed and noise reduction for future management of urban traffic from this perspective specifically.
+
+Use of Monte Carlo simulation to assist with complexity of vehicle mix and uncertainty of factors of interest.
+
+## Motivation
+
+Analyze energy savings per deciBel - ESdB
+
+ESdB = $\frac{\Delta energy}{\Delta noise}$
+
+  - $\Delta energy$ - energy variation (MJ)
+  
+  - $\Delta noise$ - noise variation (dB)
+
+Replicate ESdB relationship across car velocity for speeds 50-100 km/h using Monte Carlo methods and conversions of units from obtained data/resources.
+
+Possibly explore same analysis for medium and heavy trucks and analyze differences.
+
+## About the Data 
+
+Noise statistics for 3 types of vehicles, obtained from Noise Pollution Clearinghouse (NPC): Auto, Medium Truck, and Heavy Truck 
+
+  - Provides dB (noise at 50 ft) for each vehicle type
+ 
+  - Velocities 30-70 mph (~50-112 km/h)
+  
+  - Auto: 62-76 dB, Medium Truck: 73-86 dB, Heavy Truck: 80-89 dB
+
+## Code Explanations
+
+```{r, echo=FALSE}
+set.seed(400)
+library(bootstrap)
+library(ggplot2)
+```
+
+```{r, echo=FALSE}
+carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
+carspeed <- c(30:70)
+carspeed <- 1.60934*carspeed
+carinfo <- data.frame(carspeed) |> cbind(carDB)
+```
+
+```{r, echo=TRUE}
+set.seed(400)
+B <- 1000
+for(b in seq_len(B)) {
+  idx_star <- sample(1:41, 1000, replace = TRUE)
+  x_star <- carinfo[idx_star,]
+}
+n <- 1000
+carfunction <- function(n){
+  dB <- x_star$carDB
+  Mj <- rnorm(n, (46*12/(.26)),1)
+
+  ESDB <- (Mj)/(x_star$carspeed)
+  return(ESDB)
+}
+ESDB_stor <- data.frame(carfunction(n))
+```
+
+## Car Output
+
+```{r, echo=FALSE}
+summary(carfunction(n))
+
+ggplot() +
+  geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.)) + xlab("Car Speed (km/h)") + ylab("ESDB") + ggtitle("Car")
+```
+
+## Medium Truck Output
+
+```{r, echo=FALSE}
+## Method with DB from sample data
+# Referring to pickup trucks
+# medium truck data
+mediumtruckDB <- c(73,74,74,75,75,76,76,77,77,77,78,78,78,79,79,79,80,80,80,81,81,81,82,82,82,82,83,83,83,83,84,84,84,84,85,85,85,85,86,86,86)
+
+mediumtruckinfo <- data.frame(carspeed) |> cbind(mediumtruckDB)
+
+for(b in seq_len(B)) {
+  mediumidx_star <- sample(1:41, 1000, replace = TRUE)
+  mediumx_star <- mediumtruckinfo[mediumidx_star,]
+}
+
+n <- 1000
+
+set.seed(400)
+
+mediumtruckfunction <- function(n){
+  dB <- mediumx_star$carspeed*1.609
+    Mj <- rnorm(n, (35*150/(.26*1.609)),1)
+  ESDB <- (Mj)/(mediumx_star$carspeed)
+  return(ESDB)
+}
+medium_ESDB_stor <- mediumtruckfunction(n)
+
+summary(mediumtruckfunction(n))
+
+ggplot() +
+  geom_point(aes(x = mediumx_star$carspeed, y = medium_ESDB_stor)) + geom_smooth() + xlab("Medium Truck Speed (km/h)") + ylab("ESDB") + ggtitle ("Medium Truck")
+```
+
+## Heavy Truck Output
+
+```{r, echo=FALSE}
+# WHAT WE ARE USING
+## Method with dB as an rnorm
+set.seed(400)
+
+heavytruckDB <- c(80,80,81,81,81,82,82,82,82,83,83,83,84,84,84,84,85,85,85,85,85,86,86,86,86,86,87,87,87,87,87,88,88,88,88,88,88,89,89,89,89)
+
+heavytruckinfo <- data.frame(carspeed) |> cbind(heavytruckDB)
+
+for(b in seq_len(B)) {
+  heavyidx_star <- sample(1:41, 1000, replace = TRUE)
+  heavyx_star <- heavytruckinfo[heavyidx_star,]
+}
+n <- 1000
+
+heavy_rnormfunction <- function(n){
+  dB <- heavyx_star$carspeed*1.609
+    Mj <- rnorm(n, (43*300/(.26*1.609)),1)
+    
+  
+  ESDB <- ((Mj)/heavyx_star$carspeed)
+  return(ESDB)
+}
+
+heavy_ESDB_stor <- heavy_rnormfunction(n)
+
+summary(heavy_rnormfunction(n))
+
+ggplot() +
+  geom_point(aes(x = heavyx_star$carspeed, y = heavy_ESDB_stor)) + geom_smooth() + xlab("Heavy Truck Speed (km/h)") + ylab("ESDB") + ggtitle ("Heavy Truck")
+```
+
+## Challenges and Potential Changes for Future
+
+Statistical study had no access to related data, leading us to look for other data sources to use which may lead to less accuracy for replication of analysis.
+
+Further exploration of units and understanding of how energy consumption changes with vehicle noise and velocity.
+
+## Conclusion
+
+Able to replicate similar pattern of ESdB for car speed 50-100 km/h, but produced a smaller scale on y-axis than original study.
+
+With noise being held constant, energy savings decreases as speed increased across interval of interest. This makes sense with energy consumption increasing as speed increases, leading to less energy being saved and ultimately decreasing ESdB.
+
+Unable to replicate similar pattern for medium truck and heavy truck data, and struggled to mirror similar pattern of ESdB for velocities below 50 and abnormal spike around 105 km/h.
+
+Monte Carlo was used to allow for traffic mix and randomization of vehicles for estimation of ESdB, relating to noise, energy consumption, and velocity. 
+
+## References
+
+NPC Resources: Noise Increases with Vehicle Speed, https://www.nonoise.org/resource/trans/highway/spnoise.htm. 
+
+Rodrigues, Rui Calejo. “Modeling Urban Traffic Noise Dependence on Energy, Assisted with Monte Carlo Simulation.” Energy Reports, Elsevier, 18 Mar. 2022, https://www.sciencedirect.com/science/article/pii/S2352484722005017#b8. 
+
+## Questions
+
+
+
