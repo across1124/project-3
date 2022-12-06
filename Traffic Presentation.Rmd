@@ -29,30 +29,30 @@ ESdB = $\frac{\Delta energy}{\Delta noise}$
   
   - $\Delta noise$ - noise variation (dB)
 
-Replicate ESdB relationship across car velocity for speeds 30-70 km/h using Monte Carlo methods and conversions of units from obtained data/resources.
+Replicate ESdB relationship across car velocity for speeds 50-100 km/h using Monte Carlo methods and conversions of units from obtained data/resources.
 
 Possibly explore same analysis for medium and heavy trucks and analyze differences.
 
 ## About the Data 
 
-Obtained data from Noise Pollution Clearinghouse (NPC) for noise statistics for 3 types of vehicles: Auto, Medium Truck, and Heavy Truck 
+Noise statistics for 3 types of vehicles, obtained from Noise Pollution Clearinghouse (NPC): Auto, Medium Truck, and Heavy Truck 
 
   - Provides dB (noise at 50 ft) for each vehicle type
  
-  - Velocities 30-70 mph (~50-112)
+  - Velocities 30-70 mph (~50-112 km/h)
   
   - Auto: 62-76 dB, Medium Truck: 73-86 dB, Heavy Truck: 80-89 dB
 
 ## Code Explanations
 
-```{r cars, echo = TRUE}
-summary(cars)
+```{r, echo = TRUE}
+
 ```
 
 ## Code Explanations
 
-```{r pressure}
-plot(pressure)
+```{r}
+
 ```
 
 ## Challenges and Potential Changes for Future
@@ -63,7 +63,7 @@ Further exploration of units and understanding of how energy consumption changes
 
 ## Conclusion
 
-Able to replicate similar pattern of ESdB for car speed 30-70 km/h, but produced a smaller scale on y-axis than original study.
+Able to replicate similar pattern of ESdB for car speed 50-100 km/h, but produced a smaller scale on y-axis than original study.
 
 With noise being held constant, energy savings decreases as speed increased across interval of interest. This makes sense with energy consumption increasing as speed increases, leading to less energy being saved and ultimately decreasing ESdB.
 
@@ -73,7 +73,9 @@ Monte Carlo was used to allow for traffic mix and randomization of vehicles for 
 
 ## References
 
+NPC Resources: Noise Increases with Vehicle Speed, https://www.nonoise.org/resource/trans/highway/spnoise.htm. 
 
+Rodrigues, Rui Calejo. “Modeling Urban Traffic Noise Dependence on Energy, Assisted with Monte Carlo Simulation.” Energy Reports, Elsevier, 18 Mar. 2022, https://www.sciencedirect.com/science/article/pii/S2352484722005017#b8. 
 
 ## Questions
 
