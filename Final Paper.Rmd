@@ -29,5 +29,12 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-## Work Cited 
+## References
+NPC Resources: Noise Increases with Vehicle Speed, https://www.nonoise.org/resource/trans/highway/spnoise.htm. 
+
+Rodrigues, Rui Calejo. “Modeling Urban Traffic Noise Dependence on Energy, Assisted with Monte Carlo Simulation.” Energy Reports, Elsevier, 18 Mar. 2022, https://www.sciencedirect.com/science/article/pii/S2352484722005017#b8. 
+
+Tong, Fan et al. "Energy consumption and charging load profiles from long-haul truck electrification in the United States." Environmental Research: Infrastructure and Sustainability, 2 Sept. 2021, https://iopscience.iop.org/article/10.1088/2634-4505/ac186a 
+
+World Nuclear Association: Heat Values of Various Fuels, https://world-nuclear.org/information-library/facts-and-figures/heat-values-of-various-fuels.aspx 
 
