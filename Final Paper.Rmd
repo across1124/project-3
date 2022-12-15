@@ -1,5 +1,5 @@
 ---
-title: "Final Paper"
+title: "Urban Traffic Characteristics with Monte Carlo Simulation"
 output: pdf_document
 author: "Alaina Cross, Sarah Denison, Cameryn Manley"
 date: '2022-11-21'
@@ -9,32 +9,147 @@ date: '2022-11-21'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+**Introduction/Motivation**
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+We wanted to explore the use of Monte Carlo simulations based on the article, “Modeling urban traffic noise dependence on energy, assisted with Monte Carlo simulation” by Rui Calejo Rodrigues. In this article, the relationship between traffic noise and energy consumption was analyzed to further understand its application to energy savings and the influence of future traffic management strategies. One key contributor to this study was the calculation and use of energy savings per decibel, ESdB, which was calculated as energy variation divided by noise variation. With this, they used data collected from an on-site laboratorial source and modeled ESdB across a span of vehicle velocities with the assistance of Monte Carlo simulations to account for the uncertainty and variability of specific factors such as traffic flow and type of vehicle/vehicle mix (Rodrigues, 2021). 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Our goal was to attempt to replicate the pattern of ESdB across various speeds, our window of interest being specifically 30 to 70 miles per hour for cars, and we aimed to extend this exploration into medium trucks and heavy trucks from data accessed from a different source . With this, we aimed to imitate the decreasing pattern of ESdB as speed increased for each of the three vehicle types. Note: We were unable to include the image of ESdB variation across speeds in which we aimed to replicate from the study in our paper due to errors preventing us from including an uploaded image. In context to the article, we are attempting to reproduce a section of Figure 2 with the green line plotted along various velocities. We were unable to obtain the data the paper used, so to replicate, we first had to outsource our own data for ESdB and other variables.
 
-```{r cars}
-summary(cars)
+**Methodology**
+
+The first step was to figure out how to calculate ESdB, and with that being energy savings per decibel, we obtained data from the Noise Pollution Clearinghouse (NPC) that provided decibel values/measurements associated with various speeds from 30 miles per hour to 70 miles per hour for cars, medium trucks, and heavy trucks. We bootstrapped the 41 observations of mph and decibel to give us a larger sample of 1000 observation pairs to work with. We then used those newly produced samples along with randomly selecting values for energy consumption (in MJ) from a normal distribution with mean (46*12)/0.26 MJ, and standard deviation 1 to attempt to replicate a varying range of associated energy consumption values. 
+
+We chose to sample from a normal distribution not only because we had less success with attempting to use other distributions to sample from, but also because we found many different sources that provided very similar but not identical results of what the average energy consumption of vehicles were along with how much that average varies. We thought this would account for some more of the variation across vehicle types. 
+
+When trying to calculate ESdB, we realized we were supposed to hold decibels constant, but still used the car speed part from the bootstrap. From Rodrigues’ article, we knew the energy variation part of ESdB was in megajoules (MJ) so we looked into fuel consumption of vehicles, and discovered that “1 kilogram of gasoline can generate 46MJ” (Guala, 2017) and performed unit conversions to get the units to be in MJ along with dividing by 0.26 since there is 0.26  gallons in 1 kg. The average car tank holds 12 gallons, medium truck holds 150 gallons, and heavy truck holds 300 gallons, so we replaced each of these values when calculating ESdB for each of the three vehicle types in our unit conversions portions. We then divided that by the vehicle’s speed to get ESdB for the three types of vehicles. We ran these calculations to compute ESdB through a for loop to create 1000 different ESdB values and plotted these across the velocities between 50 and 100 km/h (30-70 mph).  
+
+**Results/Conclusion**
+
+With further reading of the article, we learned that within the velocity window of our interest the vehicle noise (in decibels) was held constant for the duration of velocities we looked at. After discussing that constant variable within our ESdB, we thought it would be beneficial to then hold our vehicle noise values constant as well to accurately imitate what we found from the study. While holding noise constant for this velocity interval, we were able to successfully replicate the decreasing pattern of ESdB across velocities for cars, medium trucks, and heavy trucks. The following three plots display the ESdB across increasing velocities between 50 to 110 km/h shown below. 
+```{r, echo=FALSE}
+set.seed(400)
+library(bootstrap)
+library(ggplot2)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r, echo=FALSE}
+carDB <- c(62,62,63,63,64,64,65,65,66,66,67,67,67,68,68,68,69,69,70,70,70,71,71,71,72,72,72,72,73,73,73,74,74,74,74,75,75,75,75,76,76)
+carspeed <- c(30:70)
+carspeed <- 1.60934*carspeed
+carinfo <- data.frame(carspeed) |> cbind(carDB)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, echo=FALSE}
+set.seed(400)
+B <- 1000
+for(b in seq_len(B)) {
+  idx_star <- sample(1:41, 1000, replace = TRUE)
+  x_star <- carinfo[idx_star,]
+}
+n <- 1000
+carfunction <- function(n){
+  dB <- x_star$carDB
+  Mj <- rnorm(n, (46*12/(.26)),1)
 
-## References
-NPC Resources: Noise Increases with Vehicle Speed, https://www.nonoise.org/resource/trans/highway/spnoise.htm. 
+  ESDB <- (Mj)/(x_star$carspeed)
+  return(ESDB)
+}
+ESDB_stor <- data.frame(carfunction(n))
+```
 
-Rodrigues, Rui Calejo. “Modeling Urban Traffic Noise Dependence on Energy, Assisted with Monte Carlo Simulation.” Energy Reports, Elsevier, 18 Mar. 2022, https://www.sciencedirect.com/science/article/pii/S2352484722005017#b8. 
+## Car Output
+
+```{r, echo=FALSE}
+summary(carfunction(n))
+
+ggplot() +
+  geom_point(aes(x = x_star$carspeed, y = ESDB_stor$carfunction.n.)) + xlab("Car Speed (km/h)") + ylab("ESDB") + ggtitle("Car")
+```
+
+## Medium Truck Output
+
+```{r, echo=FALSE}
+## Method with DB from sample data
+# Referring to pickup trucks
+# medium truck data
+mediumtruckDB <- c(73,74,74,75,75,76,76,77,77,77,78,78,78,79,79,79,80,80,80,81,81,81,82,82,82,82,83,83,83,83,84,84,84,84,85,85,85,85,86,86,86)
+
+mediumtruckinfo <- data.frame(carspeed) |> cbind(mediumtruckDB)
+
+for(b in seq_len(B)) {
+  mediumidx_star <- sample(1:41, 1000, replace = TRUE)
+  mediumx_star <- mediumtruckinfo[mediumidx_star,]
+}
+
+n <- 1000
+
+set.seed(400)
+
+mediumtruckfunction <- function(n){
+  dB <- mediumx_star$carspeed*1.609
+    Mj <- rnorm(n, (35*150/(.26*1.609)),1)
+  ESDB <- (Mj)/(mediumx_star$carspeed)
+  return(ESDB)
+}
+medium_ESDB_stor <- mediumtruckfunction(n)
+
+summary(mediumtruckfunction(n))
+
+ggplot() +
+  geom_point(aes(x = mediumx_star$carspeed, y = medium_ESDB_stor)) + geom_smooth() + xlab("Medium Truck Speed (km/h)") + ylab("ESDB") + ggtitle ("Medium Truck")
+```
+
+## Heavy Truck Output
+
+```{r, echo=FALSE}
+# WHAT WE ARE USING
+## Method with dB as an rnorm
+set.seed(400)
+
+heavytruckDB <- c(80,80,81,81,81,82,82,82,82,83,83,83,84,84,84,84,85,85,85,85,85,86,86,86,86,86,87,87,87,87,87,88,88,88,88,88,88,89,89,89,89)
+
+heavytruckinfo <- data.frame(carspeed) |> cbind(heavytruckDB)
+
+for(b in seq_len(B)) {
+  heavyidx_star <- sample(1:41, 1000, replace = TRUE)
+  heavyx_star <- heavytruckinfo[heavyidx_star,]
+}
+n <- 1000
+
+heavy_rnormfunction <- function(n){
+  dB <- heavyx_star$carspeed*1.609
+    Mj <- rnorm(n, (43*300/(.26*1.609)),1)
+    
+  
+  ESDB <- ((Mj)/heavyx_star$carspeed)
+  return(ESDB)
+}
+
+heavy_ESDB_stor <- heavy_rnormfunction(n)
+
+summary(heavy_rnormfunction(n))
+
+ggplot() +
+  geom_point(aes(x = heavyx_star$carspeed, y = heavy_ESDB_stor)) + geom_smooth() + xlab("Heavy Truck Speed (km/h)") + ylab("ESDB") + ggtitle ("Heavy Truck")
+```
+
+Although we were able to reproduce the pattern of ESdB across different vehicle velocities, the numerical values for our ESdB on the y-axis for each vehicle type plot did not match those of which we saw in Rodrigues’ article. We were unable to get our values to plateau/level out to 0, and found that our car plot ESdB plateaued around 20, our medium truck ESdB plateaued around 100, and our heavy truck ESdB plateaued around 270. 
+
+A big challenge for this project was the accurate implementation of similar data since we were unable to use the data that was used in the original study. With that being said, we struggled to use data that may have accurately reflected the same patterns in which we saw in the article we sought to replicate. Along with this, there arose confusion with the constant vehicle noise during the speed interval of interest, which may have led to inaccuracy of our results as well. We think that a better understanding and background of the data would have been beneficial for us to accurately replicate this study a little more, as well as finding sources that have more accessible data where we can use the exact same numbers without the risk of inaccurate estimations to further affect our results. 
+
+\newpage
+	
+**References**
+
+Guala, Luca. “How much energy in mega joules does it take to run a standard 1.234t American petrol car?” Quora, 2017, https://www.quora.com/How-much-energy-in-mega-joules-does-it-take-to-run-a-standard-1-234t-American-petrol-regular-petrol-not-diseal-car-for-a-one-hour-drive-averaging-70km-h/answer/Luca-Guala
+
+NPC Resources: Noise Increases with Vehicle Speed, https://www.nonoise.org/resource/trans/highway/spnoise.htm 
+
+Rodrigues, Rui Calejo. “Modeling Urban Traffic Noise Dependence on Energy, Assisted with Monte Carlo Simulation.” Energy Reports, Elsevier, 18 Mar. 2022, https://www.sciencedirect.com/science/article/pii/S2352484722005017#b8 
 
 Tong, Fan et al. "Energy consumption and charging load profiles from long-haul truck electrification in the United States." Environmental Research: Infrastructure and Sustainability, 2 Sept. 2021, https://iopscience.iop.org/article/10.1088/2634-4505/ac186a 
 
 World Nuclear Association: Heat Values of Various Fuels, https://world-nuclear.org/information-library/facts-and-figures/heat-values-of-various-fuels.aspx 
+
+
 
